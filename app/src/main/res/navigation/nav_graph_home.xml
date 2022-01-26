@@ -12,13 +12,31 @@
 
         <action
             android:id="@+id/action_home_to_file_list_fragment"
-            app:destination="@id/file_list_fragment"/>
+            app:destination="@id/file_list_fragment" />
 
     </fragment>
 
     <fragment
         android:id="@+id/file_list_fragment"
         android:name="com.file.manager.ui.fragments.FileListFragment"
-        tools:layout="@layout/fragment_file_list"/>
+        tools:layout="@layout/fragment_file_list">
+
+        <action
+            android:id="@+id/action_file_list_to_add_file_fragment"
+            app:destination="@id/add_file_fragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/add_file_fragment"
+        android:name="com.file.manager.ui.fragments.AddFileFragment"
+        tools:layout="@layout/fragment_file_list">
+
+        <argument
+            android:name="pathId"
+            app:argType="string"
+            app:nullable="false" />
+
+    </fragment>
 
 </navigation>
