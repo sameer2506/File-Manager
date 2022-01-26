@@ -16,3 +16,11 @@ fun Context.launchFileIntent(fileModel: FileModel){
     intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION.or(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
     startActivity(Intent.createChooser(intent, "Select Application"))
 }
+
+fun deleteFile(path: String){
+    val file = File(path)
+    if (file.isDirectory)
+        file.deleteRecursively()
+    else
+        file.delete()
+}

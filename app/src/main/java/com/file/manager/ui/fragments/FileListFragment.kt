@@ -1,6 +1,7 @@
 package com.file.manager.ui.fragments
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
 import androidx.fragment.app.Fragment
@@ -13,13 +14,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.file.manager.R
 import com.file.manager.databinding.FragmentFileListBinding
+import com.file.manager.fileService.FileChangeBroadcastReceiver
 import com.file.manager.model.FileModel
 import com.file.manager.model.FileType
 import com.file.manager.ui.adapter.FileListRecyclerAdapter
 import com.file.manager.ui.dialog.FileOptionsDialog
-import com.file.manager.utils.convertFileSizeToMB
-import com.file.manager.utils.launchFileIntent
-import com.file.manager.utils.log
+import com.file.manager.utils.*
 import java.io.File
 
 class FileListFragment : Fragment(), FileListRecyclerAdapter.OnItemClick {
@@ -33,6 +33,12 @@ class FileListFragment : Fragment(), FileListRecyclerAdapter.OnItemClick {
 
     private var isCopyModeActive: Boolean = false
     private var selectedFileModel: FileModel? = null
+
+    private var path: String = ""
+
+    companion object{
+        private const val OPTIONS_DIALOG_TAG = "com.file.manager.ui.options_dialog"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,7 +78,10 @@ class FileListFragment : Fragment(), FileListRecyclerAdapter.OnItemClick {
         val optionsDialog = FileOptionsDialog.build {  }
 
         optionsDialog.onDeleteClickListener = {
-            log("delete this file or directory")
+            path = fileModel.path
+            deleteFile(path)
+            updateContentOfCurrentFragment()
+            fragmentContext.toast("${fileModel.name} deleted successfully.")
         }
 
         optionsDialog.onCopyClickListener = {
@@ -80,6 +89,15 @@ class FileListFragment : Fragment(), FileListRecyclerAdapter.OnItemClick {
             selectedFileModel = fileModel
             fragmentActivity.invalidateOptionsMenu()
         }
+
+        optionsDialog.show(fragmentActivity.supportFragmentManager, OPTIONS_DIALOG_TAG)
+    }
+
+    private fun updateContentOfCurrentFragment(){
+        val broadcastIntent = Intent()
+        broadcastIntent.action = fragmentContext.getString(R.string.file_change_broadcast)
+        broadcastIntent.putExtra(FileChangeBroadcastReceiver.EXTRA_PATH, path)
+        fragmentActivity.sendBroadcast(broadcastIntent)
     }
 
     private fun addFileFragment(fileModel: FileModel){
