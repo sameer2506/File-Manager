@@ -14,6 +14,10 @@
             android:id="@+id/action_home_to_file_list_fragment"
             app:destination="@id/file_list_fragment" />
 
+        <action
+            android:id="@+id/action_home_to_image_list_fragment"
+            app:destination="@id/image_list_fragment"/>
+
     </fragment>
 
     <fragment
@@ -38,5 +42,10 @@
             app:nullable="false" />
 
     </fragment>
+
+    <fragment
+        android:id="@+id/image_list_fragment"
+        android:name="com.file.manager.ui.fragments.category.ImageListFragment"
+        tools:layout="@layout/fragment_image_list"/>
 
 </navigation>

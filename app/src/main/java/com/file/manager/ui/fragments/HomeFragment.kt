@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.navigation.fragment.findNavController
 import com.file.manager.R
 import com.file.manager.databinding.FragmentHomeBinding
@@ -45,6 +46,13 @@ class HomeFragment : Fragment() {
         val mainAdapter = CategoryAdapter(fragmentContext, categoryList)
 
         binding.categoryGridView.adapter = mainAdapter
+
+        binding.categoryGridView.onItemClickListener =
+            AdapterView.OnItemClickListener { _, _, position, _ ->
+                when(position){
+                    0 -> findNavController().navigate(R.id.image_list_fragment)
+                }
+            }
 
     }
 
