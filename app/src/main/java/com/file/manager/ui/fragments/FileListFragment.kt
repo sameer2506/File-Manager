@@ -38,7 +38,7 @@ class FileListFragment : Fragment(), FileListRecyclerAdapter.OnItemClick {
 
     private var path: String = ""
 
-    companion object{
+    companion object {
         private const val OPTIONS_DIALOG_TAG = "com.file.manager.ui.options_dialog"
     }
 
@@ -66,6 +66,13 @@ class FileListFragment : Fragment(), FileListRecyclerAdapter.OnItemClick {
 
         listExternalStorage()
 
+        if (fileList.size == 0) {
+            binding.emptyFolderLayout.visibility = View.VISIBLE
+        } else {
+            binding.emptyFolderLayout.visibility = View.GONE
+        }
+
+
         binding.fileRecyclerView.apply {
             layoutManager = LinearLayoutManager(fragmentContext)
             setHasFixedSize(true)
@@ -75,16 +82,15 @@ class FileListFragment : Fragment(), FileListRecyclerAdapter.OnItemClick {
     }
 
     override fun onClick(fileModel: FileModel) {
-        if (fileModel.fileType == FileType.FOLDER){
+        if (fileModel.fileType == FileType.FOLDER) {
             addFileFragment(fileModel)
-        }
-        else{
+        } else {
             fragmentContext.launchFileIntent(fileModel)
         }
     }
 
     override fun onLongClick(fileModel: FileModel) {
-        val optionsDialog = FileOptionsDialog.build {  }
+        val optionsDialog = FileOptionsDialog.build { }
 
         optionsDialog.onDeleteClickListener = {
             path = fileModel.path
@@ -102,14 +108,14 @@ class FileListFragment : Fragment(), FileListRecyclerAdapter.OnItemClick {
         optionsDialog.show(fragmentActivity.supportFragmentManager, OPTIONS_DIALOG_TAG)
     }
 
-    private fun updateContentOfCurrentFragment(){
+    private fun updateContentOfCurrentFragment() {
         val broadcastIntent = Intent()
         broadcastIntent.action = fragmentContext.getString(R.string.file_change_broadcast)
         broadcastIntent.putExtra(FileChangeBroadcastReceiver.EXTRA_PATH, path)
         fragmentActivity.sendBroadcast(broadcastIntent)
     }
 
-    private fun addFileFragment(fileModel: FileModel){
+    private fun addFileFragment(fileModel: FileModel) {
         val bundle = bundleOf(
             "pathId" to fileModel.path
         )
@@ -118,20 +124,20 @@ class FileListFragment : Fragment(), FileListRecyclerAdapter.OnItemClick {
     }
 
 
-    private fun listExternalStorage(){
+    private fun listExternalStorage() {
         val state = Environment.getExternalStorageState()
 
-        if (Environment.MEDIA_MOUNTED == state || Environment.MEDIA_MOUNTED_READ_ONLY == state){
+        if (Environment.MEDIA_MOUNTED == state || Environment.MEDIA_MOUNTED_READ_ONLY == state) {
             listFiles(Environment.getExternalStorageDirectory())
         }
     }
 
-    private fun listFiles(directory: File){
+    private fun listFiles(directory: File) {
         val files = directory.listFiles()
-        if (files != null){
-            for (file in files){
-                if (file != null){
-                    if (file.isDirectory){
+        if (files != null) {
+            for (file in files) {
+                if (file != null) {
+                    if (file.isDirectory) {
                         val data = FileModel(
                             file.path,
                             FileType.getFileType(file),
@@ -143,8 +149,7 @@ class FileListFragment : Fragment(), FileListRecyclerAdapter.OnItemClick {
                             R.drawable.folder_list_icon.toString()
                         )
                         fileList.add(data)
-                    }
-                    else{
+                    } else {
                         val data = FileModel(
                             file.path,
                             FileType.getFileType(file),
@@ -178,7 +183,7 @@ class FileListFragment : Fragment(), FileListRecyclerAdapter.OnItemClick {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
+        when (item.itemId) {
             R.id.menuNewFile -> {
                 createNewFileInDirectory()
             }
@@ -203,13 +208,13 @@ class FileListFragment : Fragment(), FileListRecyclerAdapter.OnItemClick {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun createNewFileInDirectory(){
+    private fun createNewFileInDirectory() {
         val bottomSheetDialog = BottomSheetDialog(fragmentContext)
         val view = LayoutInflater.from(fragmentContext).inflate(R.layout.dialog_enter_name, null)
         view.createButton.setOnClickListener {
             val fileName = view.nameEditText.text.toString()
-            if (fileName.isNotEmpty()){
-                createNewFile(fileName, path) {_, message ->
+            if (fileName.isNotEmpty()) {
+                createNewFile(fileName, path) { _, message ->
                     bottomSheetDialog.dismiss()
                     fragmentContext.toast(message)
                     updateContentOfCurrentFragment()
@@ -220,13 +225,13 @@ class FileListFragment : Fragment(), FileListRecyclerAdapter.OnItemClick {
         bottomSheetDialog.show()
     }
 
-    private fun createNewFolderInDirectory(){
+    private fun createNewFolderInDirectory() {
         val bottomSheetDialog = BottomSheetDialog(fragmentContext)
         val view = LayoutInflater.from(fragmentContext).inflate(R.layout.dialog_enter_name, null)
         view.createButton.setOnClickListener {
             val fileName = view.nameEditText.text.toString()
-            if (fileName.isNotEmpty()){
-                createNewFolder(fileName, path) {_, message ->
+            if (fileName.isNotEmpty()) {
+                createNewFolder(fileName, path) { _, message ->
                     bottomSheetDialog.dismiss()
                     fragmentContext.toast(message)
                     updateContentOfCurrentFragment()

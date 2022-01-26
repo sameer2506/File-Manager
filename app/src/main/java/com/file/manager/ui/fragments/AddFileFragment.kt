@@ -53,6 +53,12 @@ class AddFileFragment : Fragment(), FileListRecyclerAdapter.OnItemClick {
 
         listFiles(file)
 
+        if (fileList.size == 0) {
+            binding.emptyFolderLayout.visibility = View.VISIBLE
+        } else {
+            binding.emptyFolderLayout.visibility = View.GONE
+        }
+
         binding.fileRecyclerView.apply {
             layoutManager = LinearLayoutManager(fragmentContext)
             setHasFixedSize(true)
@@ -79,7 +85,7 @@ class AddFileFragment : Fragment(), FileListRecyclerAdapter.OnItemClick {
             "pathId" to fileModel.path
         )
 
-        findNavController().navigate(R.id.action_file_list_to_add_file_fragment, bundle)
+        findNavController().navigate(R.id.add_file_fragment, bundle)
     }
 
 
