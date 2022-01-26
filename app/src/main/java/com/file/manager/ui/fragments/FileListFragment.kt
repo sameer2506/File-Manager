@@ -16,6 +16,7 @@ import com.file.manager.databinding.FragmentFileListBinding
 import com.file.manager.model.FileModel
 import com.file.manager.model.FileType
 import com.file.manager.ui.adapter.FileListRecyclerAdapter
+import com.file.manager.ui.dialog.FileOptionsDialog
 import com.file.manager.utils.convertFileSizeToMB
 import com.file.manager.utils.launchFileIntent
 import com.file.manager.utils.log
@@ -29,6 +30,9 @@ class FileListFragment : Fragment(), FileListRecyclerAdapter.OnItemClick {
     private lateinit var binding: FragmentFileListBinding
 
     private var fileList: ArrayList<FileModel> = ArrayList()
+
+    private var isCopyModeActive: Boolean = false
+    private var selectedFileModel: FileModel? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,7 +69,17 @@ class FileListFragment : Fragment(), FileListRecyclerAdapter.OnItemClick {
     }
 
     override fun onLongClick(fileModel: FileModel) {
-        log("onLong function called")
+        val optionsDialog = FileOptionsDialog.build {  }
+
+        optionsDialog.onDeleteClickListener = {
+            log("delete this file or directory")
+        }
+
+        optionsDialog.onCopyClickListener = {
+            isCopyModeActive = true
+            selectedFileModel = fileModel
+            fragmentActivity.invalidateOptionsMenu()
+        }
     }
 
     private fun addFileFragment(fileModel: FileModel){
