@@ -17,6 +17,47 @@ fun Context.launchFileIntent(fileModel: FileModel){
     startActivity(Intent.createChooser(intent, "Select Application"))
 }
 
+fun createNewFile(fileName: String, path: String, callback:(result: Boolean, message: String) -> Unit){
+    val fileAlreadyExists = File(path).listFiles().map { it.name }.contains(fileName)
+    if (fileAlreadyExists){
+        callback(false, "$fileName already exists.")
+    }
+    else{
+        val file = File(path, fileName)
+        try{
+            val result = file.createNewFile()
+            if (result)
+                callback(result, "File $fileName created successfully.")
+            else
+                callback(result, "Unable to create file $fileName.")
+        }catch (e: Exception){
+            callback(false, "Unable to create file. Please try again.")
+            log(e.localizedMessage!!)
+        }
+    }
+}
+
+fun createNewFolder(folderName: String, path: String, callback:(result: Boolean, message: String) -> Unit){
+    val fileAlreadyExists = File(path).listFiles().map { it.name }.contains(folderName)
+    if (fileAlreadyExists){
+        callback(false, "$folderName already exists.")
+    }
+    else{
+        val file = File(path, folderName)
+        try{
+            val result = file.mkdir()
+            if (result)
+                callback(result, "File $folderName created successfully.")
+            else
+                callback(result, "Unable to create file $folderName.")
+        }catch (e: Exception){
+            callback(false, "Unable to create file. Please try again.")
+            log(e.localizedMessage!!)
+        }
+    }
+}
+
+
 fun deleteFile(path: String){
     val file = File(path)
     if (file.isDirectory)

@@ -11,6 +11,7 @@ import com.file.manager.R
 import com.file.manager.databinding.FragmentHomeBinding
 import com.file.manager.model.CategoryData
 import com.file.manager.ui.adapter.CategoryAdapter
+import com.file.manager.utils.log
 
 class HomeFragment : Fragment() {
 
@@ -48,6 +49,9 @@ class HomeFragment : Fragment() {
     }
 
     private fun setUpArray(){
+
+        if (categoryList.size > 0)
+            return
 
         var data = CategoryData(R.drawable.image_icon, "Photos")
         categoryList.add(data)
