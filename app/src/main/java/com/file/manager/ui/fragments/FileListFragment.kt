@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.file.manager.R
 import com.file.manager.databinding.FragmentFileListBinding
 import com.file.manager.fileService.FileChangeBroadcastReceiver
+import com.file.manager.fileService.FileIntentService
 import com.file.manager.model.FileModel
 import com.file.manager.model.FileType
 import com.file.manager.ui.adapter.FileListRecyclerAdapter
@@ -189,7 +190,14 @@ class FileListFragment : Fragment(), FileListRecyclerAdapter.OnItemClick {
                 fragmentActivity.invalidateOptionsMenu()
             }
             R.id.menuPasteFile -> {
-                log("Paste file")
+                val intent = Intent(fragmentContext, FileIntentService::class.java)
+                intent.action = FileIntentService.ACTION_COPY
+                intent.putExtra(FileIntentService.EXTRA_FILE_SOURCE_PATH, selectedFileModel?.path)
+                intent.putExtra(FileIntentService.EXTRA_FILE_DESTINATION_PATH, path)
+                fragmentActivity.startService(intent)
+
+                isCopyModeActive = false
+                fragmentActivity.invalidateOptionsMenu()
             }
         }
         return super.onOptionsItemSelected(item)

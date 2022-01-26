@@ -33,6 +33,7 @@
 
         </provider>
 
+        <service android:name=".fileService.FileIntentService" />
     </application>
 
 </manifest>
