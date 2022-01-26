@@ -8,6 +8,7 @@
         <entry key="app/src/main/res/layout/fragment_file_list.xml" value="0.328125" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.2722222222222222" />
         <entry key="app/src/main/res/layout/item_recycler_file.xml" value="0.328125" />
+        <entry key="app/src/main/res/xml/provider_paths.xml" value="0.328125" />
       </map>
     </option>
   </component>

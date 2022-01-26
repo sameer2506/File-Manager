@@ -15,6 +15,7 @@ import com.file.manager.model.FileModel
 import com.file.manager.model.FileType
 import com.file.manager.ui.adapter.FileListRecyclerAdapter
 import com.file.manager.utils.convertFileSizeToMB
+import com.file.manager.utils.launchFileIntent
 import com.file.manager.utils.log
 import java.io.File
 
@@ -53,7 +54,12 @@ class FileListFragment : Fragment(), FileListRecyclerAdapter.OnItemClick {
     }
 
     override fun onClick(fileModel: FileModel) {
-        log("onClick function called")
+        if (fileModel.fileType == FileType.FOLDER){
+            log("open sub folder")
+        }
+        else{
+            fragmentContext.launchFileIntent(fileModel)
+        }
     }
 
     override fun onLongClick(fileModel: FileModel) {
