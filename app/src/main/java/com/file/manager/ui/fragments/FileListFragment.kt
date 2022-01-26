@@ -4,10 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.fragment.findNavController
@@ -38,6 +36,11 @@ class FileListFragment : Fragment(), FileListRecyclerAdapter.OnItemClick {
 
     companion object{
         private const val OPTIONS_DIALOG_TAG = "com.file.manager.ui.options_dialog"
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -151,6 +154,40 @@ class FileListFragment : Fragment(), FileListRecyclerAdapter.OnItemClick {
                 }
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        menu.clear()
+        inflater.inflate(R.menu.main_menu, menu)
+
+        val subMenu = menu.findItem(R.id.subMenu)
+        val pasteItem = menu.findItem(R.id.menuPasteFile)
+        val cancelItem = menu.findItem(R.id.menuCancel)
+
+        subMenu.isVisible = !isCopyModeActive
+        pasteItem.isVisible = isCopyModeActive
+        cancelItem.isVisible = isCopyModeActive
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.menuNewFile -> {
+                log("Create new file in current directory")
+            }
+            R.id.menuNewFolder -> {
+                log("Create new folder in the current directory")
+            }
+            R.id.menuCancel -> {
+                isCopyModeActive = false
+                fragmentActivity.invalidateOptionsMenu()
+            }
+            R.id.menuPasteFile -> {
+                log("Paste file")
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 
