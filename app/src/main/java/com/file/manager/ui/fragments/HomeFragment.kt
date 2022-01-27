@@ -51,6 +51,12 @@ class HomeFragment : Fragment() {
             AdapterView.OnItemClickListener { _, _, position, _ ->
                 when(position){
                     0 -> findNavController().navigate(R.id.image_list_fragment)
+                    1 -> findNavController().navigate(R.id.video_list_fragment)
+                    2 -> findNavController().navigate(R.id.audio_list_fragment)
+                    3 -> findNavController().navigate(R.id.document_list_fragment)
+                    4 -> findNavController().navigate(R.id.apk_list_fragment)
+                    5 -> findNavController().navigate(R.id.archives_list_fragment)
+                    6 -> findNavController().navigate(R.id.download_list_fragment)
                 }
             }
 
@@ -70,7 +76,7 @@ class HomeFragment : Fragment() {
         data = CategoryData(R.drawable.music_icon, "Audio")
         categoryList.add(data)
 
-        data = CategoryData(R.drawable.docs_icon, "Documents")
+        data = CategoryData(R.drawable.docs_icon, "Document")
         categoryList.add(data)
 
         data = CategoryData(R.drawable.folder, "APKs")

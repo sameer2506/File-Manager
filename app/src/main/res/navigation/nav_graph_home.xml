@@ -16,7 +16,7 @@
 
         <action
             android:id="@+id/action_home_to_image_list_fragment"
-            app:destination="@id/image_list_fragment"/>
+            app:destination="@id/image_list_fragment" />
 
     </fragment>
 
@@ -46,6 +46,31 @@
     <fragment
         android:id="@+id/image_list_fragment"
         android:name="com.file.manager.ui.fragments.category.ImageListFragment"
-        tools:layout="@layout/fragment_image_list"/>
+        tools:layout="@layout/fragment_image_list" />
+
+    <fragment
+        android:id="@+id/video_list_fragment"
+        android:name="com.file.manager.ui.fragments.category.VideoListFragment"
+        tools:layout="@layout/files_list" />
+
+    <fragment
+        android:id="@+id/audio_list_fragment"
+        android:name="com.file.manager.ui.fragments.category.AudioListFragment" />
+
+    <fragment
+        android:id="@+id/document_list_fragment"
+        android:name="com.file.manager.ui.fragments.category.DocumentListFragment" />
+
+    <fragment
+        android:id="@+id/apk_list_fragment"
+        android:name="com.file.manager.ui.fragments.category.ApkListFragment" />
+
+    <fragment
+        android:id="@+id/archives_list_fragment"
+        android:name="com.file.manager.ui.fragments.category.ArchivesListFragment" />
+
+    <fragment
+        android:id="@+id/download_list_fragment"
+        android:name="com.file.manager.ui.fragments.category.DownloadListFragment" />
 
 </navigation>
